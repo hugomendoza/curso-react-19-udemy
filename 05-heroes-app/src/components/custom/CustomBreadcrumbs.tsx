@@ -29,7 +29,10 @@ export const CustomBreadcrumbs = ({ currentPage, breadcrumbs = [] }: Props) => {
         </BreadcrumbItem>
 
         {breadcrumbs.map((crumb) => (
-          <div className="flex items-center">
+          <div
+            className="flex items-center"
+            key={crumb.label}
+          >
             <BreadcrumbSeparator>
               <SlashIcon />
             </BreadcrumbSeparator>
