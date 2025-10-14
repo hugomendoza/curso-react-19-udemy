@@ -13,6 +13,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { CustomLogo } from '@/components/custom/CustomLogo';
+import { useAuthStore } from '@/auth/store/auth.store';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -21,6 +22,15 @@ interface SidebarProps {
 
 export const AdminSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
   const { pathname } = useLocation();
+  const { user } = useAuthStore();
+
+  // const initials = user?.fullName
+  //   .split(' ')
+  //   .map((name) => name.substring(0, 1))
+  //   .join(',')
+  //   .replace(',', '');
+
+  // console.log({ initials });
 
   const menuItems = [
     { icon: Home, label: 'Dashboard', to: '/admin' },
@@ -91,13 +101,15 @@ export const AdminSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
         <div className="p-4 border-t border-gray-200">
           <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-              JD
+              {user?.fullName.substring(0, 2) || '-'}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 truncate">
-                John Doe
+                {user?.fullName || '-'}
               </p>
-              <p className="text-xs text-gray-500 truncate">john@company.com</p>
+              <p className="text-xs text-gray-500 truncate">
+                {user?.email || '-'}
+              </p>
             </div>
           </div>
         </div>
