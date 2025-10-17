@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Pencil, PencilIcon, PlusIcon } from 'lucide-react';
+import { PencilIcon, PlusIcon } from 'lucide-react';
 
 import { AdminTitle } from '@/admin/components/AdminTitle';
 import { CustomPagination } from '@/components/custom/CustomPagination';

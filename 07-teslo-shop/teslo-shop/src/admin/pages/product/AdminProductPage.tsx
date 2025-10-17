@@ -33,7 +33,7 @@ export const AdminProductPage = () => {
 
       onError: (error) => {
         console.log(error);
-        console.log('Error al actualizxar el producto');
+        console.log('Error al actualizar el producto');
       },
     });
   };
