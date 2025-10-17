@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { X, SaveAll, Tag, Plus, Upload } from 'lucide-react';
@@ -44,12 +44,16 @@ export const ProductForm = ({
     defaultValues: product,
   });
 
+  const labelInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    setFiles([]);
+  }, [product]);
+
   const selectedSizes = watch('sizes');
   const selectedTags = watch('tags');
   const currentStock = watch('stock');
-
-  const labelInputRef = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState<File[]>([]);
 
   const addTag = () => {
     const newTag = labelInputRef.current!.value;

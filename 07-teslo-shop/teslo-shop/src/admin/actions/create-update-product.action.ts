@@ -14,12 +14,23 @@ export const createUpdateProductAction = async (
   rest.stock = Number(rest.stock || 0);
   rest.price = Number(rest.price || 0);
 
-  console.log({ files });
+  if (files.length > 0) {
+    const newImagesName = await uploadFiles(files);
+    images.push(...newImagesName);
+  }
+
+  const imagesToSave = images.map((image) => {
+    if (images.includes('http')) return image.split('/').pop() || '';
+    return image;
+  });
 
   const { data } = await tesloApi<Product>({
     url: isCreating ? '/products' : `/products/${id}`,
     method: isCreating ? 'POST' : 'PATCH',
-    data: rest,
+    data: {
+      ...rest,
+      images: imagesToSave,
+    },
   });
 
   return {
@@ -29,4 +40,27 @@ export const createUpdateProductAction = async (
       return `${import.meta.env.VITE_API_URL}/files/products/${image}`;
     }),
   };
+};
+
+export interface FileUploadResponse {
+  secureUrl: string;
+  fileName: string;
+}
+
+const uploadFiles = async (files: File[]) => {
+  const uploadPromises = files.map(async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const { data } = await tesloApi<FileUploadResponse>({
+      url: '/files/product',
+      method: 'POST',
+      data: formData,
+    });
+
+    return data.fileName;
+  });
+
+  const uploadedFileNames = await Promise.all(uploadPromises);
+  return uploadedFileNames;
 };
